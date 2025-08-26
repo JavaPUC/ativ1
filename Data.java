@@ -85,27 +85,15 @@ public class Data {
     {
         int[] meses31 = { 1, 3, 5, 7, 8, 10, 12 };
         int[] meses30 = { 4, 6, 9, 11 };
+        boolean is31 = false;
+        
+        System.out.println("Dia: " + this.dia);
 
         for (int i = 0; i < meses31.length; i++) {
-            if (this.mes == meses31[i]) { // caso esteja no array
-                System.out.println("encontrou no array");
-                if (this.dia == 31 && this.mes != 12) { // checa se o dia é 31 
-                    System.out.println("nao é dezembro mas é ultimo dia do mes");
-                    this.dia = 1; // caso seja, define o dia como o 1 do mes e aumenta o mês
-                    this.mes++;
-                    break;
-                } else if (this.mes == 12 && this.dia == 31) {
-                    this.dia = 1;
-                    this.mes = 1;
-                    this.ano++;
-                } 
-                else {
-                    System.out.println("oi");
-                    this.dia++; // caso contrário, incrementa 1 no dia
-                }
-                break;
-            }
+            if (this.mes == meses31[i]) {
+                is31 = true;
         }
+    }
 
         if (this.mes == 2) {
             if (this.dia + 1 == 29 && isBissexto(this.ano)) { // caso o dia + 1 resulte em 29 e o ano seja bissexto
@@ -117,20 +105,46 @@ public class Data {
             } else {
                 this.dia++;
             }
+        
+        } else if(is31) {
+            for (int i = 0; i < meses31.length; i++) {
+                if (this.mes == meses31[i]) { // caso esteja no array
+                    if (this.dia == 31 && this.mes != 12) { // checa se o dia é 31 
+    
+                        this.dia = 1; // caso seja, define o dia como o 1 do mes e aumenta o mês
+                        this.mes++;
+                        break;
+                    } else if (this.mes == 12 && this.dia == 31) {
+             
+                        this.dia = 1;
+                        this.mes = 1;
+                        this.ano++;
+                    } 
+                    else {
+                        System.out.println("oi");
+                        this.dia++; // caso contrário, incrementa 1 no dia
+                    }
+                    break;
+                }
+            }
         } else {
             for (int i = 0; i < meses30.length; i++) {
                 if (this.mes == meses30[i]) { // caso esteja no array
                     if ((this.dia == 30)) { // checa se o dia é 32
                         this.dia = 1; // caso seja, define o dia como o 1 do mes e aumenta o mês
                         this.mes++;
+                        System.out.println("Dia: " + this.dia);
                     } else {
                         this.dia++; // caso contrário, incrementa 1 no dia
                     }
                     break;
                 }
             }
+            System.out.println("Dia: " + this.dia);
         }
-        
+        }
+            
+      
             
 
             /*
@@ -142,5 +156,5 @@ public class Data {
              */
 
         }
-    }
+    
 
