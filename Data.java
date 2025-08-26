@@ -1,0 +1,146 @@
+public class Data {
+    private byte dia, mes;
+    private short ano;
+
+    public static boolean isBissexto(short ano) {
+        // Calendario Juliano
+        if (ano < 1582)
+            if (ano % 4 == 0)
+                return true;
+            else
+                return false;
+
+        // Calendario Gregoriano
+        if (ano % 400 == 0)
+            return true;
+        if (ano % 4 == 0 && ano % 100 != 0)
+            return true;
+        return false;
+    }
+
+    public static boolean isValida(byte dia, byte mes, short ano) {
+        if (ano < -45)
+            return false; // antes do Calendario Juliano
+        if (ano == 0)
+            return false; // nao existiu ano 0; do ano 1ac foi direto para o ano 1dc
+        if (ano == 1582 && mes == 10 && dia >= 5 && dia <= 14)
+            return false; // dias cortados dos calendario pelo Papa Gregorio
+
+        if (dia < 1 || dia > 31 || mes < 1 || mes > 12)
+            return false;
+
+        if (dia > 30 && (mes == 4 || mes == 6 || mes == 9 || mes == 11))
+            return false;
+        if (dia > 29 && mes == 2)
+            return false;
+        if (dia > 28 && mes == 2 && !Data.isBissexto(ano))
+            return false;
+
+        return true;
+    }
+
+    public /* void */ Data(byte dia, byte mes, short ano) throws Exception {
+        if (!Data.isValida(dia, mes, ano))
+            throw new Exception("Data invalida");
+
+        this.dia = dia;
+        this.mes = mes;
+        this.ano = ano;
+    }
+
+    public void setDia(byte dia) throws Exception {
+        if (!Data.isValida(dia, this.mes, this.ano))
+            throw new Exception("Dia invalido");
+
+        this.dia = dia;
+    }
+
+    public byte getDia() {
+        return this.dia;
+    }
+
+    public void setMes(byte mes) throws Exception {
+        if (!Data.isValida(this.dia, mes, this.ano))
+            throw new Exception("Mes invalido");
+
+        this.mes = mes;
+    }
+
+    public byte getMes() {
+        return this.mes;
+    }
+
+    public void setAno(short ano) throws Exception {
+        if (!Data.isValida(this.dia, this.mes, ano))
+            throw new Exception("Ano invalido");
+
+        this.ano = ano;
+    }
+
+    public short getAno() {
+        return this.ano;
+    }
+
+    public void avanceUmDia() // altera o this
+    {
+        int[] meses31 = { 1, 3, 5, 7, 8, 10, 12 };
+        int[] meses30 = { 4, 6, 9, 11 };
+
+        for (int i = 0; i < meses31.length; i++) {
+            if (this.mes == meses31[i]) { // caso esteja no array
+                System.out.println("encontrou no array");
+                if (this.dia == 31 && this.mes != 12) { // checa se o dia é 31 
+                    System.out.println("nao é dezembro mas é ultimo dia do mes");
+                    this.dia = 1; // caso seja, define o dia como o 1 do mes e aumenta o mês
+                    this.mes++;
+                    break;
+                } else if (this.mes == 12 && this.dia == 31) {
+                    this.dia = 1;
+                    this.mes = 1;
+                    this.ano++;
+                } 
+                else {
+                    System.out.println("oi");
+                    this.dia++; // caso contrário, incrementa 1 no dia
+                }
+                break;
+            }
+        }
+
+        if (this.mes == 2) {
+            if (this.dia + 1 == 29 && isBissexto(this.ano)) { // caso o dia + 1 resulte em 29 e o ano seja bissexto
+                this.dia++;
+            } else if (this.dia + 1 == 29 && !isBissexto(this.ano)) { // caso o dia + 1 resulte em 29 e o ano NÃO
+                                                                      // seja bissexto
+                this.dia = 1;
+                this.mes++;
+            } else {
+                this.dia++;
+            }
+        } else {
+            for (int i = 0; i < meses30.length; i++) {
+                if (this.mes == meses30[i]) { // caso esteja no array
+                    if ((this.dia == 30)) { // checa se o dia é 32
+                        this.dia = 1; // caso seja, define o dia como o 1 do mes e aumenta o mês
+                        this.mes++;
+                    } else {
+                        this.dia++; // caso contrário, incrementa 1 no dia
+                    }
+                    break;
+                }
+            }
+        }
+        
+            
+
+            /*
+             * public Data getDiaSeguinte () // não altera o this
+             * {
+             * Data proxData =
+             * return Data;
+             * }
+             */
+
+        }
+    }
+
