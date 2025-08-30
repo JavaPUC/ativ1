@@ -81,19 +81,20 @@ public class Data {
         return this.ano;
     }
 
+    int[] meses31 = { 1, 3, 5, 7, 8, 10, 12 };
+    int[] meses30 = { 4, 6, 9, 11 };
+
     public void avanceUmDia() // altera o this
     {
-        int[] meses31 = { 1, 3, 5, 7, 8, 10, 12 };
-        int[] meses30 = { 4, 6, 9, 11 };
+
         boolean is31 = false;
-        
-        System.out.println("Dia: " + this.dia);
+
 
         for (int i = 0; i < meses31.length; i++) {
             if (this.mes == meses31[i]) {
                 is31 = true;
+            }
         }
-    }
 
         if (this.mes == 2) {
             if (this.dia + 1 == 29 && isBissexto(this.ano)) { // caso o dia + 1 resulte em 29 e o ano seja bissexto
@@ -105,23 +106,21 @@ public class Data {
             } else {
                 this.dia++;
             }
-        
-        } else if(is31) {
+
+        } else if (is31) {
             for (int i = 0; i < meses31.length; i++) {
                 if (this.mes == meses31[i]) { // caso esteja no array
-                    if (this.dia == 31 && this.mes != 12) { // checa se o dia é 31 
-    
+                    if (this.dia == 31 && this.mes != 12) { // checa se o dia é 31
+
                         this.dia = 1; // caso seja, define o dia como o 1 do mes e aumenta o mês
                         this.mes++;
                         break;
                     } else if (this.mes == 12 && this.dia == 31) {
-             
+
                         this.dia = 1;
                         this.mes = 1;
                         this.ano++;
-                    } 
-                    else {
-                        System.out.println("oi");
+                    } else {
                         this.dia++; // caso contrário, incrementa 1 no dia
                     }
                     break;
@@ -133,28 +132,25 @@ public class Data {
                     if ((this.dia == 30)) { // checa se o dia é 32
                         this.dia = 1; // caso seja, define o dia como o 1 do mes e aumenta o mês
                         this.mes++;
-                        System.out.println("Dia: " + this.dia);
                     } else {
                         this.dia++; // caso contrário, incrementa 1 no dia
                     }
                     break;
                 }
             }
-            System.out.println("Dia: " + this.dia);
         }
+    }
+
+    public Data getDiaSeguinte() { // sem alterar this
+        try {
+            Data proxEba = new Data(this.dia, this.mes, this.ano); // deep copy
+            proxEba.avanceUmDia();
+            return proxEba;
+
+        } catch (Exception ex) {
+            System.err.println("nao ta podendo");
+            return null;
         }
-            
-      
-            
+    }
 
-            /*
-             * public Data getDiaSeguinte () // não altera o this
-             * {
-             * Data proxData =
-             * return Data;
-             * }
-             */
-
-        }
-    
-
+}
